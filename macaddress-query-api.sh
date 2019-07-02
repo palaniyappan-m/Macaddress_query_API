@@ -29,15 +29,20 @@ OUTPUT_TYPE=${OUTPUT_TYPE:-vendor}
 
 # Input of MAC might with delimter ':' or '-" So converting it into standard format.
 MAC_ADDR=${1//[-:]/}
-
+if [ ${#MAC_ADDR} -lt 12 ]
+then
+    echo " Mac address should be 6 octet with : or -"
+else
 # Getting URL as a specific value
 API_URL="https://api.macaddress.io/v1?&output=${OUTPUT_TYPE}&search=${MAC_ADDR}"
 
 # Make the API call.
 Vendor=`curl -sS -H "X-Authentication-Token:${API_KEY}" ${API_URL}`
-if [ -z "$Vendor" ]
-then
-   echo "Please enter correct MAC address"
-else
-   echo "MAC Interface Company Name : $Vendor"
+ if [ -z "$Vendor" ]
+ then
+    echo "Please enter correct MAC address"
+ else
+    echo "MAC Interface Company Name : $Vendor"
+ fi
 fi
+
